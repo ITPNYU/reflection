@@ -1,0 +1,5 @@
+Flask>=0.7
+Flask-SQLAlchemy
+Flask-Restless
+SQLAlchemy>=0.6
+Python>=2.6
