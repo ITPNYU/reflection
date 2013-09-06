@@ -95,9 +95,11 @@ def add_cors_header(response):
 # FIXME: implement API key
 manager = flask.ext.restless.APIManager(app, flask_sqlalchemy_db=db)
 app.after_request(add_cors_header)
-manager.create_api(Link, methods=['GET', 'POST', 'DELETE'])
-manager.create_api(Tag, methods=['GET', 'POST', 'DELETE'])
-manager.create_api(User, methods=['GET', 'POST', 'DELETE'])
+manager.create_api(Link, methods=['GET', 'POST', 'DELETE'], url_prefix='/sim')
+manager.create_api(Tag, methods=['GET', 'POST', 'DELETE'], url_prefix='/sim')
+manager.create_api(User, methods=['GET', 'POST', 'DELETE'], url_prefix='/sim')
+manager.create_api(IDCard, methods=['GET', 'POST', 'DELETE'], url_prefix='/sim')
+manager.create_api(APIKey, methods=['GET', 'POST', 'DELETE'], url_prefix='/sim')
 
 
 # Form presentation
