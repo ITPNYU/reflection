@@ -1,6 +1,6 @@
 from flask import Flask, redirect, render_template, request
-from flask.ext.sqlalchemy import SQLAlchemy
-import flask.ext.restless
+from flask_sqlalchemy import SQLAlchemy
+from flask_restless import APIManager
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
@@ -18,10 +18,11 @@ link_tag = db.Table('link_tag', db.Model.metadata, db.Column('link_id', db.Integ
 class Link(db.Model):
     __tablename__ = 'link'
     id = db.Column(db.Integer, primary_key=True)
-    url = db.Column(db.String(1000), nullable=False)
-    user = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    url = db.Column(db.String(255), nullable=False) # FIXME: too long for VARCHAR / db.String type?
+    title = db.Column(db.String(100), nullable=True)
+    annotation = db.Column(db.String(255), nullable=True)
     tags = relationship('Tag', secondary=link_tag, backref='links')
-    annotation = db.Column(db.String(1000), nullable=True)
+    user = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     created_at = db.Column(db.DateTime(), nullable=False)
     modified_at = db.Column(db.DateTime(), nullable=False)
     
@@ -32,8 +33,8 @@ class Tag(db.Model):
     __tablename__ = 'tag'
     id = db.Column(db.Integer, primary_key=True)
     tag = db.Column(db.String(100), nullable=False)
-    user = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     annotation = db.Column(db.String(1000), nullable=True)
+    user = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     created_at = db.Column(db.DateTime(), nullable=False)
     modified_at = db.Column(db.DateTime(), nullable=False)
     #links = relationship('Link', secondary=link_tag, backref='tags')
@@ -49,6 +50,7 @@ class User(db.Model):
     username = db.Column(db.String(30), nullable=False, unique=True)
     netid = db.Column(db.String(30), nullable=True, unique=True)
     university_id = db.Column(db.String(30), nullable=True, unique=True)
+    status = db.Column(db.String(30), nullable=False)
     # FIXME: attempt to fix the presence of user.id in API output
     #links = relationship('Link')
     #tags = relationship('Tag')
@@ -72,7 +74,7 @@ class IDCard(db.Model):
 class APIKey(db.Model):
     __tablename__ = 'apikey'
     id = db.Column(db.Integer, primary_key=True)
-    apikey = db.Column(db.String(30), nullable=False, unique=True)
+    apikey = db.Column(db.String(64), nullable=False, unique=True)
     user = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     created_at = db.Column(db.DateTime(), nullable=False)
     modified_at = db.Column(db.DateTime(), nullable=False)
@@ -91,9 +93,9 @@ def add_cors_header(response):
 
 
 # API endpoints
-# FIXME: change top level from /api to /sim
+# FIXME: change top level from /api to /sim in a single place, if possible
 # FIXME: implement API key
-manager = flask.ext.restless.APIManager(app, flask_sqlalchemy_db=db)
+manager = APIManager(app, flask_sqlalchemy_db=db)
 app.after_request(add_cors_header)
 manager.create_api(Link, methods=['GET', 'POST', 'DELETE'], url_prefix='/sim')
 manager.create_api(Tag, methods=['GET', 'POST', 'DELETE'], url_prefix='/sim')
