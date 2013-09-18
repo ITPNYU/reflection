@@ -2,7 +2,7 @@ from flask import Flask, redirect, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_restless import APIManager
 from sqlalchemy import ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import joinedload, relationship
 from sqlalchemy.sql import func
 import re
 
@@ -28,6 +28,9 @@ class Link(db.Model):
     
     def __repr__(self):
         return '<Link %r>' % self.url
+    
+    def username(self):
+        return db.session.query(User, User.username).filter(User.id == self.user).one().username
   
 class Tag(db.Model):
     __tablename__ = 'tag'
@@ -76,6 +79,7 @@ class APIKey(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     apikey = db.Column(db.String(64), nullable=False, unique=True)
     user = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    status = db.Column(db.String(30), nullable=False)
     created_at = db.Column(db.DateTime(), nullable=False)
     modified_at = db.Column(db.DateTime(), nullable=False)
     
@@ -85,7 +89,7 @@ class APIKey(db.Model):
 
 # Cross origin request, https://github.com/jfinkels/flask-restless/issues/223
 def add_cors_header(response):
-    response.headers['Access-Control-Allow-Origin'] = 'http://127.0.0.1:8000'
+    response.headers['Access-Control-Allow-Origin'] = 'http://127.0.0.1'
     response.headers['Access-Control-Allow-Methods'] = 'HEAD, GET, POST, PATCH, PUT, OPTIONS, DELETE'
     response.headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept'
     response.headers['Access-Control-Allow-Credentials'] = 'true'
@@ -97,7 +101,7 @@ def add_cors_header(response):
 # FIXME: implement API key
 manager = APIManager(app, flask_sqlalchemy_db=db)
 app.after_request(add_cors_header)
-manager.create_api(Link, methods=['GET', 'POST', 'DELETE'], url_prefix='/sim')
+manager.create_api(Link, methods=['GET', 'POST', 'DELETE'], include_methods=['username'], url_prefix='/sim')
 manager.create_api(Tag, methods=['GET', 'POST', 'DELETE'], url_prefix='/sim')
 manager.create_api(User, methods=['GET', 'POST', 'DELETE'], url_prefix='/sim')
 manager.create_api(IDCard, methods=['GET', 'POST', 'DELETE'], url_prefix='/sim')

@@ -24,10 +24,10 @@ INSERT INTO idcard (id, serial, user, created_at, modified_at) VALUES (1, '74856
 INSERT INTO idcard (id, serial, user, created_at, modified_at) VALUES (2, '00680', 4, '2013-09-06 07:51:00', '2013-09-06 07:51:00');
 INSERT INTO idcard (id, serial, user, created_at, modified_at) VALUES (3, '1378', 2, '2013-09-06 07:51:00', '2013-09-06 07:51:00');
 
-INSERT INTO apikey (id, apikey, user, created_at, modified_at) VALUES (1, '7c53e1ed-922e-4595-94cb-9eb76b1e6e75', 1, '2013-09-06 08:51:00', '2013-09-06 09:51:00');
-INSERT INTO apikey (id, apikey, user, created_at, modified_at) VALUES (2, 'c0dc70db-7068-43c1-b144-464cd8902f36', 2, '2013-09-06 08:51:00', '2013-09-06 09:51:00');
-INSERT INTO apikey (id, apikey, user, created_at, modified_at) VALUES (3, 'b7976898-8f8b-47bd-8dec-762e30b780ce', 3, '2013-09-06 08:51:00', '2013-09-06 09:51:00');
-INSERT INTO apikey (id, apikey, user, created_at, modified_at) VALUES (4, 'cae9a4a2-7dcc-42a9-9773-9b6968750495', 4, '2013-09-06 08:51:00', '2013-09-06 09:51:00');
+INSERT INTO apikey (id, apikey, user, status, created_at, modified_at) VALUES (1, '7c53e1ed-922e-4595-94cb-9eb76b1e6e75', 1, 'enabled', '2013-09-06 08:51:00', '2013-09-06 09:51:00');
+INSERT INTO apikey (id, apikey, user, status, created_at, modified_at) VALUES (2, 'c0dc70db-7068-43c1-b144-464cd8902f36', 2, 'enabled', '2013-09-06 08:51:00', '2013-09-06 09:51:00');
+INSERT INTO apikey (id, apikey, user, status, created_at, modified_at) VALUES (3, 'b7976898-8f8b-47bd-8dec-762e30b780ce', 3, 'enabled', '2013-09-06 08:51:00', '2013-09-06 09:51:00');
+INSERT INTO apikey (id, apikey, user, status, created_at, modified_at) VALUES (4, 'cae9a4a2-7dcc-42a9-9773-9b6968750495', 4, 'disabled', '2013-09-06 08:51:00', '2013-09-06 09:51:00');
 
 
 
