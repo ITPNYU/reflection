@@ -15,6 +15,23 @@ db = SQLAlchemy(app)
 # association table
 link_tag = db.Table('link_tag', db.Model.metadata, db.Column('link_id', db.Integer, ForeignKey('link.id'), nullable=False), db.Column('tag_id', db.Integer, ForeignKey('tag.id'), nullable=False))
 
+class User(db.Model):
+    __tablename__ = 'user'
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(30), nullable=False, unique=True)
+    netid = db.Column(db.String(30), nullable=True, unique=True)
+    university_id = db.Column(db.String(30), nullable=True, unique=True)
+    status = db.Column(db.String(30), nullable=False)
+    # FIXME: attempt to fix the presence of user.id in API output
+    #links = relationship('Link', backref="user")
+    links = relationship('Link')
+    #tags = relationship('Tag')
+    created_at = db.Column(db.DateTime(), nullable=False)
+    modified_at = db.Column(db.DateTime(), nullable=False)
+    
+    def __repr__(self):
+        return '<User %r>' % self.username
+
 class Link(db.Model):
     __tablename__ = 'link'
     id = db.Column(db.Integer, primary_key=True)
@@ -31,7 +48,7 @@ class Link(db.Model):
     
     def username(self):
         return db.session.query(User, User.username).filter(User.id == self.user).one().username
-  
+
 class Tag(db.Model):
     __tablename__ = 'tag'
     id = db.Column(db.Integer, primary_key=True)
@@ -46,22 +63,6 @@ class Tag(db.Model):
     
     def __repr__(self):
         return '<Tag %r>' % self.tag
-
-class User(db.Model):
-    __tablename__ = 'user'
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(30), nullable=False, unique=True)
-    netid = db.Column(db.String(30), nullable=True, unique=True)
-    university_id = db.Column(db.String(30), nullable=True, unique=True)
-    status = db.Column(db.String(30), nullable=False)
-    # FIXME: attempt to fix the presence of user.id in API output
-    #links = relationship('Link')
-    #tags = relationship('Tag')
-    created_at = db.Column(db.DateTime(), nullable=False)
-    modified_at = db.Column(db.DateTime(), nullable=False)
-    
-    def __repr__(self):
-        return '<User %r>' % self.username
 
 class IDCard(db.Model):
     __tablename__ = 'idcard'
