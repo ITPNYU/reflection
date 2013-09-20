@@ -24,7 +24,7 @@ class User(db.Model):
     status = db.Column(db.String(30), nullable=False)
     # FIXME: attempt to fix the presence of user.id in API output
     #links = relationship('Link', backref="user")
-    links = relationship('Link')
+    #links = relationship('Link')
     #tags = relationship('Tag')
     created_at = db.Column(db.DateTime(), nullable=False)
     modified_at = db.Column(db.DateTime(), nullable=False)
@@ -52,9 +52,8 @@ class Link(db.Model):
 class Tag(db.Model):
     __tablename__ = 'tag'
     id = db.Column(db.Integer, primary_key=True)
-    tag = db.Column(db.String(100), nullable=False)
-    annotation = db.Column(db.String(1000), nullable=True)
-    user = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    tag = db.Column(db.String(100), nullable=False, unique=True)
+    status = db.Column(db.String(30), nullable=False)
     created_at = db.Column(db.DateTime(), nullable=False)
     modified_at = db.Column(db.DateTime(), nullable=False)
     #links = relationship('Link', secondary=link_tag, backref='tags')
@@ -69,6 +68,7 @@ class IDCard(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     serial = db.Column(db.String(30), nullable=False, unique=True)
     user = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    status = db.Column(db.String(30), nullable=False)
     created_at = db.Column(db.DateTime(), nullable=False)
     modified_at = db.Column(db.DateTime(), nullable=False)
     
@@ -103,7 +103,7 @@ def add_cors_header(response):
 manager = APIManager(app, flask_sqlalchemy_db=db)
 app.after_request(add_cors_header)
 manager.create_api(Link, methods=['GET', 'POST', 'DELETE'], include_methods=['username'], url_prefix='/sim')
-manager.create_api(Tag, methods=['GET', 'POST', 'DELETE'], url_prefix='/sim')
+manager.create_api(Tag, methods=['GET', 'POST', 'DELETE'], exclude_columns=['links'], url_prefix='/sim')
 manager.create_api(User, methods=['GET', 'POST', 'DELETE'], url_prefix='/sim')
 manager.create_api(IDCard, methods=['GET', 'POST', 'DELETE'], url_prefix='/sim')
 manager.create_api(APIKey, methods=['GET', 'POST', 'DELETE'], url_prefix='/sim')
