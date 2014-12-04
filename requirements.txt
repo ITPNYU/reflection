@@ -1,0 +1,6 @@
+Flask==0.10.1
+Flask-Login==0.2.11
+Flask-Restless==0.15.0
+psycopg2==2.5.4
+SQLAlchemy==0.9.8
+PyJWT==0.3.0

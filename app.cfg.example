@@ -1,0 +1,9 @@
+[database]
+DATABASE_URI: postgresql://simulacra:somelongpassword@127.0.0.1/simulacra
+
+[secrets]
+SECRET: somelongstring
+
+SALT: somelongstring
+
+JWT_SECRET: somelongstring
