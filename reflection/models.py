@@ -1,5 +1,5 @@
 from flask_login import UserMixin
-from simulacra.database import Base
+from reflection.database import Base
 from sqlalchemy import Boolean, Column, DateTime, Enum, ForeignKey, Integer, String, Table, Text
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func

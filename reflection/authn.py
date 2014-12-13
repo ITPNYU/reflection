@@ -3,9 +3,9 @@ import jwt
 from flask_login import current_user, login_user
 from flask_restless import ProcessingException
 from hashlib import sha256
-from simulacra.config import config
-from simulacra.database import db_session
-from simulacra.models import Account
+from reflection.config import config
+from reflection.database import db_session
+from reflection.models import Account
 from sqlalchemy.orm.exc import NoResultFound
 from time import time
 

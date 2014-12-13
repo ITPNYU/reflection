@@ -1,5 +1,5 @@
 [database]
-DATABASE_URI: postgresql://simulacra:somelongpassword@127.0.0.1/simulacra
+DATABASE_URI: postgresql://reflection:somelongpassword@127.0.0.1/reflection
 
 [secrets]
 SECRET: somelongstring

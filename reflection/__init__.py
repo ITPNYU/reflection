@@ -5,10 +5,10 @@ from flask_login import LoginManager, current_user
 from flask_restless import APIManager, ProcessingException
 from re import sub
 from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
-from simulacra.authn import authn_func, create_session, perform_login
-from simulacra.config import config
-from simulacra.database import Base, db_session, engine
-from simulacra.models import Account, Affiliation, Course, Doc, Person, Project, Section, Session, Subject, Tag, Term, Venue
+from reflection.authn import authn_func, create_session, perform_login
+from reflection.config import config
+from reflection.database import Base, db_session, engine
+from reflection.models import Account, Affiliation, Course, Doc, Person, Project, Section, Session, Subject, Tag, Term, Venue
 
 app = Flask(__name__)
 app.secret_key = config.get('secrets', 'SECRET')
